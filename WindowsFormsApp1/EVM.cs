@@ -12,6 +12,12 @@ namespace WindowsFormsApp1
         /// время смены терминала = 30
         /// </summary>
         private int time = 30;
+
+        /// <summary>
+        /// Буффер
+        /// </summary>
+        public List<Task> stash = new List<Task>();
+
         public int[] Work(Terminal terminal, int h)
         {
             int[] mas = new int [2];
