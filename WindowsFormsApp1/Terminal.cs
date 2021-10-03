@@ -16,18 +16,29 @@ namespace WindowsFormsApp1
         /// Количество символов обрабатываемых за секунду
         /// </summary>
         public int M = 3;
-        /// <summary>
-        /// Буффер
-        /// </summary>
-        public List<Task> stash = new List<Task>();
 
+
+        private Task task { get; set; }
+        public Task Task
+        {
+            get
+            {
+                return this.task;
+            }
+            set
+            {   
+                if(value != null)
+                {
+                    this.task = value;
+                }
+            }
+        }
 
         public Terminal(int timeWork = 3, int M = 30)
         {
             this.timeWork = timeWork;
             this.M = M;
         }
-
 
     }
 }

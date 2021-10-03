@@ -12,11 +12,11 @@ namespace WindowsFormsApp1
         /// время смены терминала = 30
         /// </summary>
         private int time = 30;
-        public int[] Work(Task task, Terminal evm, int h)
+        public int[] Work(Terminal terminal, int h)
         {
             int[] mas = new int [2];
-            mas[0] = task.N - evm.M * h;
-            mas[1] = evm.timeWork - h;
+            mas[0] = terminal.Task.N - terminal.M * h;
+            mas[1] = terminal.timeWork - h;
             return mas;
         }
 

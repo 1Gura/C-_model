@@ -30,7 +30,7 @@ namespace WindowsFormsApp1
             var bmp = new Bitmap(pictureBox2.Width, pictureBox2.Height);
             Graphics graph = Graphics.FromImage(bmp);
             var pen = new Pen(Color.Blue);
-            graph.DrawLine(pen, 10,50,150,200);
+            graph.DrawLine(pen, 10, 50, 150, 200);
             pictureBox2.Image = bmp;
         }
 
@@ -48,32 +48,45 @@ namespace WindowsFormsApp1
             var evm = new EVM();
             int k = 1;
 
-            for (int i = 0; i < sutki; i+=h)
+            for (int i = 0; i < sutki; i += h)
             {
-                switch(k)
+                ///Тут должны поступать задания на каждый терминал с учётом времени t1, t2, t3
+
+                if (terminal1.Task != null || terminal2.Task != null || terminal3.Task != null)
                 {
-                    case 1 :
-                        if (evm.Work(task, terminal1, h)[0] <= 0 && evm.Work(task, terminal1, h)[1] > 0)
-                        {
-                            evm.timeReset();
-                            k = 2;
-                        }
-                        break;
-                    case 2:
-                        if (evm.Work(task, terminal2 , h)[0] <= 0 && evm.Work(task, terminal2 , h)[1] > 0)
-                        {
-                            terminal1 = new Terminal();
-                            k = 3;
-                        }
-                        break;
-                    case 3:
-                        if (evm.Work(task, terminal3, h)[0] <= 0 && evm.Work(task, terminal3, h)[1] > 0)
-                        {
-                            terminal1 = new Terminal();
-                            k = 1;
-                        }
-                        break;
+                    /// Тут идет обработка терминалом задачи, если задача успела выполнится, то просто переходим к след. терминалу(или если ее нет),
+                    /// иначе, если закончилось отведенное время поместим недоделанную задачу в СТЭШ и перейдем к след. терминалу
+                    switch (k)
+                    {
+                        case 1:
+                            if (evm.Work(terminal1, h)[0] <= 0 && evm.Work(terminal1, h)[1] > 0)
+                            {
+                                evm.timeReset();
+                                if (evm.Work(terminal1, h)[1] <= 0)
+                                {
+                                    evm.stash.Add(terminal1.Task);
+                                }
+                                terminal1 = new Terminal();
+                                k = 2;
+                            }
+                            break;
+                        case 2:
+                            if (evm.Work(terminal2, h)[0] <= 0 && evm.Work(terminal2, h)[1] > 0)
+                            {
+                                terminal1 = new Terminal();
+                                k = 3;
+                            }
+                            break;
+                        case 3:
+                            if (evm.Work(terminal3, h)[0] <= 0 && evm.Work(terminal3, h)[1] > 0)
+                            {
+                                terminal1 = new Terminal();
+                                k = 1;
+                            }
+                            break;
+                    }
                 }
+
             }
 
         }
