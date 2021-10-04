@@ -60,7 +60,6 @@ namespace WindowsFormsApp1
         {
             for (j = 0; j < sutki; j += h)
             {
-                Thread.Sleep(1);
                 ///Тут должны поступать задания на каждый терминал с учётом времени t1, t2, t3
                 foreach (Terminal terminal in terminals)
                 {
@@ -69,12 +68,12 @@ namespace WindowsFormsApp1
                     {
                         if (terminal.Task == null)
                         {
-
                             var task = new Zadacha();
                             terminal.Task = task;
                         }
                         else
                         {
+                            Thread.Sleep(1);
                             evm.stash.Add(new Zadacha());
                         }
                         terminal.interval = 30;
