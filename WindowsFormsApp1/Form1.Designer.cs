@@ -43,6 +43,7 @@ namespace WindowsFormsApp1
             this.label12 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.textBox13 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,7 +58,7 @@ namespace WindowsFormsApp1
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(55, 13);
+            this.textBox7.Location = new System.Drawing.Point(143, 10);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(128, 20);
             this.textBox7.TabIndex = 1;
@@ -154,16 +155,25 @@ namespace WindowsFormsApp1
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(201, 12);
+            this.pictureBox2.Location = new System.Drawing.Point(335, 13);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(424, 227);
             this.pictureBox2.TabIndex = 13;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
+            // textBox13
+            // 
+            this.textBox13.Location = new System.Drawing.Point(335, 246);
+            this.textBox13.Multiline = true;
+            this.textBox13.Name = "textBox13";
+            this.textBox13.Size = new System.Drawing.Size(684, 354);
+            this.textBox13.TabIndex = 14;
+            // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(837, 468);
+            this.ClientSize = new System.Drawing.Size(1150, 612);
+            this.Controls.Add(this.textBox13);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.textBox12);
@@ -216,6 +226,7 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.TextBox textBox13;
     }
 }
 

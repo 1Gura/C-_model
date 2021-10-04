@@ -11,7 +11,7 @@ namespace WindowsFormsApp1
         /// <summary>
         /// Время на обработку задачи в секундакх
         /// </summary>
-        public int timeWork = 30;
+        public int interval = 30;
         /// <summary>
         /// Количество символов обрабатываемых за секунду
         /// </summary>
@@ -34,9 +34,9 @@ namespace WindowsFormsApp1
             }
         }
 
-        public Terminal(int timeWork = 3, int M = 30)
+        public Terminal(int timeWork = 30, int M = 3)
         {
-            this.timeWork = timeWork;
+            this.interval = timeWork;
             this.M = M;
         }
 

@@ -11,19 +11,24 @@ namespace WindowsFormsApp1
         /// <summary>
         /// время смены терминала = 30
         /// </summary>
-        private int time = 30;
+        public int time = 30;
+
 
         /// <summary>
         /// Буффер
         /// </summary>
         public List<Task> stash = new List<Task>();
 
-        public int[] Work(Terminal terminal, int h)
+        /// <summary>
+        /// Количество символов оставшихся для обработки
+        /// </summary>
+        /// <param name="terminal"></param>
+        /// <param name="h"></param>
+        /// <returns></returns>
+        public int Work(Terminal terminal, int h)
         {
-            int[] mas = new int [2];
-            mas[0] = terminal.Task.N - terminal.M * h;
-            mas[1] = terminal.timeWork - h;
-            return mas;
+
+            return terminal.Task.N -= terminal.M * h;
         }
 
         public void timeReset(int time = 30)

@@ -20,6 +20,9 @@ namespace WindowsFormsApp1
         private int N = 60;
         private int M = 3;
         private int h = 3;
+        private List<Terminal> terminals = new List<Terminal> { new Terminal(), new Terminal(), new Terminal() };
+        EVM evm = new EVM();
+        int k = 1;
         public Form1()
         {
             InitializeComponent();
@@ -41,54 +44,107 @@ namespace WindowsFormsApp1
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var terminal1 = new Terminal();
-            var terminal2 = new Terminal();
-            var terminal3 = new Terminal();
-            var task = new Task();
-            var evm = new EVM();
-            int k = 1;
-
             for (int i = 0; i < sutki; i += h)
             {
                 ///Тут должны поступать задания на каждый терминал с учётом времени t1, t2, t3
-
-                if (terminal1.Task != null || terminal2.Task != null || terminal3.Task != null)
+                foreach (Terminal terminal in terminals)
                 {
-                    /// Тут идет обработка терминалом задачи, если задача успела выполнится, то просто переходим к след. терминалу(или если ее нет),
-                    /// иначе, если закончилось отведенное время поместим недоделанную задачу в СТЭШ и перейдем к след. терминалу
+                    terminal.interval -= h;
+                    if (terminal.interval <= 0)
+                    {
+                        if (terminal.Task == null)
+                        {
+                            var task = new Task();
+                            terminal.Task = task;
+                        }
+                        else
+                        {
+                            evm.stash.Add(new Task());
+                        }
+                        terminal.interval = 30;
+                    }
+                }
+                if (terminals[0].Task != null || terminals[1].Task != null || terminals[2].Task != null)
+                {
+                    /// Тут идет обработка терминалом задачи, если задача успела выполнится,
+                    /// то просто переходим к след. терминалу(или если ее нет),
+                    /// иначе, если закончилось отведенное время поместим недоделанную задачу в СТЭШ
+                    /// и перейдем к след. терминалу
+
+                    int workOver = 0;
+                    int timeOver = 0;
                     switch (k)
                     {
                         case 1:
-                            if (evm.Work(terminal1, h)[0] <= 0 && evm.Work(terminal1, h)[1] > 0)
+                            workOver = (evm.Work(terminals[0], h));
+                            timeOver = evm.time -= h;
+                            if (workOver <= 0 || timeOver <= 0)
                             {
                                 evm.timeReset();
-                                if (evm.Work(terminal1, h)[1] <= 0)
+                                if (workOver <= 0)
                                 {
-                                    evm.stash.Add(terminal1.Task);
+                                    evm.stash.Add(terminals[0].Task);
+                                    textBox13.Text += "Поместили в СТЭШ";
                                 }
-                                terminal1 = new Terminal();
+                                terminals[0].Task = null;
+                                textBox13.Text += "Задача решена/убрана из терминала";
+
                                 k = 2;
                             }
                             break;
                         case 2:
-                            if (evm.Work(terminal2, h)[0] <= 0 && evm.Work(terminal2, h)[1] > 0)
+                            workOver = (evm.Work(terminals[1], h));
+                            timeOver = evm.time -= h;
+                            if (workOver <= 0 || timeOver <= 0)
                             {
-                                terminal1 = new Terminal();
+                                evm.timeReset();
+                                if (workOver <= 0)
+                                {
+                                    evm.stash.Add(terminals[1].Task);
+                                }
+                                terminals[1].Task = null;
                                 k = 3;
                             }
                             break;
                         case 3:
-                            if (evm.Work(terminal3, h)[0] <= 0 && evm.Work(terminal3, h)[1] > 0)
+                            workOver = (evm.Work(terminals[2], h));
+                            timeOver = evm.time -= h;
+                            if (workOver <= 0 || timeOver <= 0)
                             {
-                                terminal1 = new Terminal();
-                                k = 1;
+                                evm.timeReset();
+                                if (workOver <= 0)
+                                {
+                                    evm.stash.Add(terminals[2].Task);
+                                }
+                                terminals[2].Task = null;
+                                k = 3;
                             }
                             break;
                     }
                 }
+                else
+                {
+                    terminals[1].Task = evm.stash.FirstOrDefault();
+                    k = 1;
+                }
+                if (sutki <= 0)
+                {
+                    label7.Text = sutki.ToString();
+                    return;
+                }
 
             }
 
+        }
+
+        private void setTerminal(bool workOver)
+        {
+            evm.timeReset();
+            if (!workOver)
+            {
+                evm.stash.Add(terminals[1].Task);
+            }
+            terminals[1].Task = null;
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
