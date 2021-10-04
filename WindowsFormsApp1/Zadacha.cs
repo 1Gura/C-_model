@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApp1
 {
-    class Task
+    class Zadacha
     {
         private int id { get; set; }
         public int Id
@@ -31,7 +31,7 @@ namespace WindowsFormsApp1
 
         public int N { get; set; }
 
-        public Task(int N = 60)
+        public Zadacha(int N = 60)
         {
             this.N = N;
         }

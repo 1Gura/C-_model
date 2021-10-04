@@ -17,7 +17,7 @@ namespace WindowsFormsApp1
         /// <summary>
         /// Буффер
         /// </summary>
-        public List<Task> stash = new List<Task>();
+        public List<Zadacha> stash = new List<Zadacha>();
 
         /// <summary>
         /// Количество символов оставшихся для обработки

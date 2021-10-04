@@ -18,8 +18,8 @@ namespace WindowsFormsApp1
         public int M = 3;
 
 
-        private Task task { get; set; }
-        public Task Task
+        private Zadacha task { get; set; }
+        public Zadacha Task
         {
             get
             {

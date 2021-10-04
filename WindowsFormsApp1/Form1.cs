@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -20,6 +21,7 @@ namespace WindowsFormsApp1
         private int N = 60;
         private int M = 3;
         private int h = 3;
+        private int j = 0;
         private List<Terminal> terminals = new List<Terminal> { new Terminal(), new Terminal(), new Terminal() };
         EVM evm = new EVM();
         int k = 1;
@@ -42,10 +44,23 @@ namespace WindowsFormsApp1
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+
+        private async void button2_ClickAsync(object sender, EventArgs e)
         {
-            for (int i = 0; i < sutki; i += h)
+            timer1.Start();
+
+            await Task.Run(() =>
             {
+                Start();
+            });
+
+        }
+
+        private void Start()
+        {
+            for (j = 0; j < sutki; j += h)
+            {
+                Thread.Sleep(1);
                 ///Тут должны поступать задания на каждый терминал с учётом времени t1, t2, t3
                 foreach (Terminal terminal in terminals)
                 {
@@ -54,18 +69,20 @@ namespace WindowsFormsApp1
                     {
                         if (terminal.Task == null)
                         {
-                            var task = new Task();
+
+                            var task = new Zadacha();
                             terminal.Task = task;
                         }
                         else
                         {
-                            evm.stash.Add(new Task());
+                            evm.stash.Add(new Zadacha());
                         }
                         terminal.interval = 30;
                     }
                 }
                 if (terminals[0].Task != null || terminals[1].Task != null || terminals[2].Task != null)
                 {
+
                     /// Тут идет обработка терминалом задачи, если задача успела выполнится,
                     /// то просто переходим к след. терминалу(или если ее нет),
                     /// иначе, если закончилось отведенное время поместим недоделанную задачу в СТЭШ
@@ -73,6 +90,7 @@ namespace WindowsFormsApp1
 
                     int workOver = 0;
                     int timeOver = 0;
+
                     switch (k)
                     {
                         case 1:
@@ -84,10 +102,8 @@ namespace WindowsFormsApp1
                                 if (workOver <= 0)
                                 {
                                     evm.stash.Add(terminals[0].Task);
-                                    textBox13.Text += "Поместили в СТЭШ";
                                 }
                                 terminals[0].Task = null;
-                                textBox13.Text += "Задача решена/убрана из терминала";
 
                                 k = 2;
                             }
@@ -97,6 +113,7 @@ namespace WindowsFormsApp1
                             timeOver = evm.time -= h;
                             if (workOver <= 0 || timeOver <= 0)
                             {
+
                                 evm.timeReset();
                                 if (workOver <= 0)
                                 {
@@ -111,6 +128,7 @@ namespace WindowsFormsApp1
                             timeOver = evm.time -= h;
                             if (workOver <= 0 || timeOver <= 0)
                             {
+
                                 evm.timeReset();
                                 if (workOver <= 0)
                                 {
@@ -127,9 +145,9 @@ namespace WindowsFormsApp1
                     terminals[1].Task = evm.stash.FirstOrDefault();
                     k = 1;
                 }
-                if (sutki <= 0)
+                if (j >= sutki)
                 {
-                    label7.Text = sutki.ToString();
+                    timer1.Stop();
                     return;
                 }
 
@@ -155,6 +173,26 @@ namespace WindowsFormsApp1
         private void pictureBox2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            label7.Text = k.ToString();
+        }
+
+        private void process1_Exited(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            textBox13.Text = j.ToString();
         }
     }
 }

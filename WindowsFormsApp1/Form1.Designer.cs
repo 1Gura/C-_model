@@ -29,6 +29,7 @@ namespace WindowsFormsApp1
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label7 = new System.Windows.Forms.Label();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.textBox8 = new System.Windows.Forms.TextBox();
@@ -44,6 +45,10 @@ namespace WindowsFormsApp1
             this.button2 = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.textBox13 = new System.Windows.Forms.TextBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.process1 = new System.Diagnostics.Process();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -151,7 +156,7 @@ namespace WindowsFormsApp1
             this.button2.TabIndex = 12;
             this.button2.Text = "Запустить";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.button2_ClickAsync);
             // 
             // pictureBox2
             // 
@@ -170,9 +175,47 @@ namespace WindowsFormsApp1
             this.textBox13.Size = new System.Drawing.Size(684, 354);
             this.textBox13.TabIndex = 14;
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(16, 319);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(167, 23);
+            this.button3.TabIndex = 15;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(16, 359);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(167, 23);
+            this.button4.TabIndex = 16;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // process1
+            // 
+            this.process1.StartInfo.Domain = "";
+            this.process1.StartInfo.LoadUserProfile = false;
+            this.process1.StartInfo.Password = null;
+            this.process1.StartInfo.StandardErrorEncoding = null;
+            this.process1.StartInfo.StandardOutputEncoding = null;
+            this.process1.StartInfo.UserName = "";
+            this.process1.SynchronizingObject = this;
+            this.process1.Exited += new System.EventHandler(this.process1_Exited);
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(1150, 612);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.textBox13);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.button2);
@@ -227,6 +270,10 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.TextBox textBox13;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
+        private System.Diagnostics.Process process1;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
