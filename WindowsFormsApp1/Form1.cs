@@ -15,16 +15,15 @@ namespace WindowsFormsApp1
     public partial class Form1 : Form
     {
         private int sutki = 24 * 60 * 60;
-        private int t1 = 30;
-        private int t2 = 30;
-        private int t3 = 30;
-        private int t4 = 30;
-        private int N = 60;
-        private int M = 3;
-        private int h = 3;
-        private int j = 0;
+        private int t1;
+        private int t2;
+        private int t3;
+        private int t4;
+        private int N;
+        private int M;
+        private int h;
+        private int j;
         private string writePath = @"test.txt";
-
 
         private int countTask = 0;
         private int countStash = 0;
@@ -39,11 +38,7 @@ namespace WindowsFormsApp1
         }
         public void Draw()
         {
-            var bmp = new Bitmap(pictureBox2.Width, pictureBox2.Height);
-            Graphics graph = Graphics.FromImage(bmp);
-            var pen = new Pen(Color.Blue);
-            graph.DrawLine(pen, 10, 50, 150, 200);
-            pictureBox2.Image = bmp;
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -54,18 +49,57 @@ namespace WindowsFormsApp1
 
         private async void button2_ClickAsync(object sender, EventArgs e)
         {
-            timer1.Start();
-
-            await Task.Run(() =>
+            try
             {
-                Start();
-            });
+                if (
+                textBox9.Text.Length > 0 &&
+                textBox10.Text.Length > 0 &&
+                textBox11.Text.Length > 0 &&
+                textBox12.Text.Length > 0 &&
+                textBox13.Text.Length > 0 &&
+                textBox14.Text.Length > 0 &&
+                textBox15.Text.Length > 0
+                )
+                {
+                    pictureBox1.Visible = true;
 
+                    label16.Text = "В работе...";
+                    timer1.Start();
+                    await Task.Run(() =>
+                    {
+                        Start();
+                    });
+                }
+                else
+                {
+                    MessageBox.Show("Необходимо заполнить все поля!");
+
+                }
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show("Возникла ошибка " + err);
+            }
+            
         }
 
         private void Start()
         {
-            int countGlobal = 0;
+            try
+            {
+                t1 = Int32.Parse(textBox9.Text);
+                t2 = Int32.Parse(textBox10.Text);
+                t3 = Int32.Parse(textBox11.Text);
+                t4 = Int32.Parse(textBox12.Text);
+                N = Int32.Parse(textBox14.Text);
+                M = Int32.Parse(textBox13.Text);
+                h = Int32.Parse(textBox15.Text);
+            } 
+            catch(Exception)
+            {
+                MessageBox.Show("Проверьте правильность введенных данных!");
+            }
+            
 
             using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default))
             {
@@ -85,7 +119,6 @@ namespace WindowsFormsApp1
 
                     int workOver = 0;
                     int timeOver = 0;
-                    countGlobal++;
                     switch (k)
                     {
                         case 1:
@@ -98,14 +131,12 @@ namespace WindowsFormsApp1
                                 {
                                     fileWrite("Задача была решена на 1 терминале" + " на " + j);
                                     countTask++;
-
                                 }
                                 else
                                 {
                                     evm.stash.Add(terminals[0].Task);
                                     fileWrite("Задача была помещена в очередь" + " на " + j);
                                     countStash++;
-
                                 }
                                 terminals[0].Task = null;
                                 k = 2;
@@ -122,14 +153,12 @@ namespace WindowsFormsApp1
                                 {
                                     fileWrite("Задача была решена на 2 терминале" + " на " + j);
                                     countTask++;
-
                                 }
                                 else
                                 {
                                     evm.stash.Add(terminals[1].Task);
                                     fileWrite("Задача была помещена в очередь" + " на " + j);
                                     countStash++;
-
                                 }
                                 terminals[1].Task = null;
                                 k = 3;
@@ -146,14 +175,12 @@ namespace WindowsFormsApp1
                                 {
                                     fileWrite("Задача была решена на 3 терминале" + " на " + j);
                                     countTask++;
-
                                 }
                                 else
                                 {
                                     evm.stash.Add(terminals[2].Task);
                                     fileWrite("Задача была помещена в очередь)" + " на " + j);
                                     countStash++;
-
                                 }
                                 terminals[2].Task = null;
                                 k = 1;
@@ -163,21 +190,19 @@ namespace WindowsFormsApp1
                 }
                 else
                 {
-                    if(evm.stash.Count() > 0)
+                    if (evm.stash.Count() > 0)
                     {
                         terminals[k].Task = evm.stash.FirstOrDefault();
                         fileWrite("Задача была помещена в терминал из очереди" + " на " + j);
                     }
-                    
                 }
                 if (j >= sutki)
                 {
                     timer1.Stop();
+                    label16.Text = "Работа завершена успехом";
                     return;
                 }
-
             }
-
         }
 
         private void setTerminal(bool workOver)
@@ -212,7 +237,7 @@ namespace WindowsFormsApp1
                         evm.stash.Add(new Zadacha());
                         fileWrite("Задача была помещана в очередь т.к. Т" + count + "занят");
                         countStash++;
-                            
+
                     }
                     terminal.interval = 30;
                 }
@@ -249,11 +274,6 @@ namespace WindowsFormsApp1
             Close();
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            label7.Text = k.ToString();
-        }
-
         private void process1_Exited(object sender, EventArgs e)
         {
 
@@ -261,9 +281,28 @@ namespace WindowsFormsApp1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            textBox13.Text = j.ToString();
             textBox7.Text = countTask.ToString();
             textBox8.Text = countStash.ToString();
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox13_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox14_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox9_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
