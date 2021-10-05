@@ -57,20 +57,20 @@ namespace WindowsFormsApp1
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(13, 13);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(35, 13);
+            this.label7.Size = new System.Drawing.Size(152, 13);
             this.label7.TabIndex = 0;
-            this.label7.Text = "label7";
+            this.label7.Text = "Количество решенных задач";
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(143, 10);
+            this.textBox7.Location = new System.Drawing.Point(171, 10);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(128, 20);
             this.textBox7.TabIndex = 1;
             // 
             // textBox8
             // 
-            this.textBox8.Location = new System.Drawing.Point(55, 58);
+            this.textBox8.Location = new System.Drawing.Point(171, 55);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(128, 20);
             this.textBox8.TabIndex = 3;
@@ -80,9 +80,9 @@ namespace WindowsFormsApp1
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(13, 58);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(35, 13);
+            this.label8.Size = new System.Drawing.Size(141, 13);
             this.label8.TabIndex = 2;
-            this.label8.Text = "label8";
+            this.label8.Text = "Количество задач в стеше";
             // 
             // textBox9
             // 
@@ -162,17 +162,17 @@ namespace WindowsFormsApp1
             // 
             this.pictureBox2.Location = new System.Drawing.Point(335, 13);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(424, 227);
+            this.pictureBox2.Size = new System.Drawing.Size(684, 237);
             this.pictureBox2.TabIndex = 13;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // textBox13
             // 
-            this.textBox13.Location = new System.Drawing.Point(335, 246);
+            this.textBox13.Location = new System.Drawing.Point(335, 256);
             this.textBox13.Multiline = true;
             this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(684, 354);
+            this.textBox13.Size = new System.Drawing.Size(684, 344);
             this.textBox13.TabIndex = 14;
             // 
             // button3
@@ -208,7 +208,7 @@ namespace WindowsFormsApp1
             // 
             // timer1
             // 
-            this.timer1.Interval = 1000;
+            this.timer1.Interval = 300;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form1

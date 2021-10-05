@@ -18,21 +18,8 @@ namespace WindowsFormsApp1
         public int M = 3;
 
 
-        private Zadacha task { get; set; }
-        public Zadacha Task
-        {
-            get
-            {
-                return this.task;
-            }
-            set
-            {   
-                if(value != null)
-                {
-                    this.task = value;
-                }
-            }
-        }
+        public Zadacha Task { get; set; }
+        
 
         public Terminal(int timeWork = 30, int M = 3)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -22,6 +23,12 @@ namespace WindowsFormsApp1
         private int M = 3;
         private int h = 3;
         private int j = 0;
+        private string writePath = @"test.txt";
+
+
+        private int countTask = 0;
+        private int countStash = 0;
+
         private List<Terminal> terminals = new List<Terminal> { new Terminal(), new Terminal(), new Terminal() };
         EVM evm = new EVM();
         int k = 1;
@@ -58,27 +65,16 @@ namespace WindowsFormsApp1
 
         private void Start()
         {
-            for (j = 0; j < sutki; j += h)
+            int countGlobal = 0;
+
+            using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default))
             {
-                ///Тут должны поступать задания на каждый терминал с учётом времени t1, t2, t3
-                foreach (Terminal terminal in terminals)
-                {
-                    terminal.interval -= h;
-                    if (terminal.interval <= 0)
-                    {
-                        if (terminal.Task == null)
-                        {
-                            var task = new Zadacha();
-                            terminal.Task = task;
-                        }
-                        else
-                        {
-                            Thread.Sleep(1);
-                            evm.stash.Add(new Zadacha());
-                        }
-                        terminal.interval = 30;
-                    }
-                }
+                sw.WriteLine("");
+            }
+
+            for (j = 3; j < sutki; j += h)
+            {
+                setTasks();
                 if (terminals[0].Task != null || terminals[1].Task != null || terminals[2].Task != null)
                 {
 
@@ -89,7 +85,7 @@ namespace WindowsFormsApp1
 
                     int workOver = 0;
                     int timeOver = 0;
-
+                    countGlobal++;
                     switch (k)
                     {
                         case 1:
@@ -100,10 +96,18 @@ namespace WindowsFormsApp1
                                 evm.timeReset();
                                 if (workOver <= 0)
                                 {
+                                    fileWrite("Задача была решена на 1 терминале" + " на " + j);
+                                    countTask++;
+
+                                }
+                                else
+                                {
                                     evm.stash.Add(terminals[0].Task);
+                                    fileWrite("Задача была помещена в очередь" + " на " + j);
+                                    countStash++;
+
                                 }
                                 terminals[0].Task = null;
-
                                 k = 2;
                             }
                             break;
@@ -116,7 +120,16 @@ namespace WindowsFormsApp1
                                 evm.timeReset();
                                 if (workOver <= 0)
                                 {
+                                    fileWrite("Задача была решена на 2 терминале" + " на " + j);
+                                    countTask++;
+
+                                }
+                                else
+                                {
                                     evm.stash.Add(terminals[1].Task);
+                                    fileWrite("Задача была помещена в очередь" + " на " + j);
+                                    countStash++;
+
                                 }
                                 terminals[1].Task = null;
                                 k = 3;
@@ -131,18 +144,31 @@ namespace WindowsFormsApp1
                                 evm.timeReset();
                                 if (workOver <= 0)
                                 {
+                                    fileWrite("Задача была решена на 3 терминале" + " на " + j);
+                                    countTask++;
+
+                                }
+                                else
+                                {
                                     evm.stash.Add(terminals[2].Task);
+                                    fileWrite("Задача была помещена в очередь)" + " на " + j);
+                                    countStash++;
+
                                 }
                                 terminals[2].Task = null;
-                                k = 3;
+                                k = 1;
                             }
                             break;
                     }
                 }
                 else
                 {
-                    terminals[1].Task = evm.stash.FirstOrDefault();
-                    k = 1;
+                    if(evm.stash.Count() > 0)
+                    {
+                        terminals[k].Task = evm.stash.FirstOrDefault();
+                        fileWrite("Задача была помещена в терминал из очереди" + " на " + j);
+                    }
+                    
                 }
                 if (j >= sutki)
                 {
@@ -162,6 +188,50 @@ namespace WindowsFormsApp1
                 evm.stash.Add(terminals[1].Task);
             }
             terminals[1].Task = null;
+        }
+        /// <summary>
+        ///Тут должны поступать задания на каждый терминал с учётом времени t1, t2, t3
+        /// </summary>
+        private void setTasks()
+        {
+            var count = 0;
+            foreach (Terminal terminal in terminals)
+            {
+                terminal.interval -= h;
+                if (terminal.interval <= 0)
+                {
+                    count++;
+                    if (terminal.Task == null)
+                    {
+                        var task = new Zadacha();
+                        terminal.Task = task;
+                        fileWrite(" " + "Задача поступила в терминал" + "№" + count + " на " + j);
+                    }
+                    else
+                    {
+                        evm.stash.Add(new Zadacha());
+                        fileWrite("Задача была помещана в очередь т.к. Т" + count + "занят");
+                        countStash++;
+                            
+                    }
+                    terminal.interval = 30;
+                }
+            }
+        }
+
+        private void fileWrite(string str = "")
+        {
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(writePath, true))
+                {
+                    sw.WriteLine(str);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+            }
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -192,6 +262,8 @@ namespace WindowsFormsApp1
         private void timer1_Tick(object sender, EventArgs e)
         {
             textBox13.Text = j.ToString();
+            textBox7.Text = countTask.ToString();
+            textBox8.Text = countStash.ToString();
         }
     }
 }
